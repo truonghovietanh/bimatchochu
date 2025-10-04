@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chu bị điên</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #ffb6c1, #add8e6);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive;
+    }
+    h1 {
+      font-size: 50px;
+      color: white;
+      text-shadow: 2px 2px 5px #ff69b4;
+      z-index: 10;
+    }
+    .bunny {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 60px;
+    }
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      font-size: 40px;
+      animation: float 6s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐇 Chu bị khùn hehehe 🐇</h1>
+  <div class="bunny">🐰</div>
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    // 🎈 Tạo bóng bay bay lên
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      balloon.style.left = Math.random() * window.innerWidth + "px";
+      balloon.textContent = "🎈";
+      balloon.style.color = Math.random() > 0.5 ? "pink" : "lightblue";
+      document.body.appendChild(balloon);
+
+      setTimeout(() => balloon.remove(), 6000);
+    }
+    setInterval(createBalloon, 800);
+
+    // 🎆 Hiệu ứng pháo hoa
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function Firework(x, y) {
+      this.x = x;
+      this.y = y;
+      this.particles = [];
+      for (let i = 0; i < 100; i++) {
+        this.particles.push({
+          x: x,
+          y: y,
+          angle: random(0, Math.PI * 2),
+          speed: random(1, 5),
+          radius: 2,
+          alpha: 1,
+          color: Math.random() > 0.5 ? "pink" : "lightblue"
+        });
+      }
+    }
+
+    Firework.prototype.update = function () {
+      this.particles.forEach(p => {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+        p.alpha -= 0.01;
+      });
+    };
+
+    Firework.prototype.draw = function () {
+      this.particles.forEach(p => {
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    };
+
+    let fireworks = [];
+
+    setInterval(() => {
+      fireworks.push(new Firework(random(100, canvas.width - 100), random(100, canvas.height - 100)));
+    }, 1500);
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      fireworks.forEach((fw, i) => {
+        fw.update();
+        fw.draw();
+        if (fw.particles[0].alpha <= 0) fireworks.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
