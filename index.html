@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Gửi Chu Con Cu </title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to right, #ffb6c1, #add8e6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 20px 40px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #ff69b4;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Gửi Chu Thư 🖕</h2>
+    <input type="text" id="username" placeholder="Tài khoản">
+    <input type="password" id="password" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <script>
+    function login() {
+      const tk = document.getElementById("username").value;
+      const mk = document.getElementById("password").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (tk === "chungocminhthu" && mk === "18122006") {
+        window.location.href = "success.html";
+      } else {
+        errorMsg.textContent = "❌ Sai mật khẩu hoặc tài khoản!";
+      }
+    }
+  </script>
+</body>
+</html>
